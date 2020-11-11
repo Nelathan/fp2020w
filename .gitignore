@@ -1,0 +1,45 @@
+
+# Created by https://www.gitignore.io/api/haskell
+# Edit at https://www.gitignore.io/?templates=haskell
+
+### Haskell ###
+dist
+dist-*
+cabal-dev
+*.o
+*.hi
+*.chi
+*.chs.h
+*.dyn_o
+*.dyn_hi
+.hpc
+.hsenv
+.cabal-sandbox/
+cabal.sandbox.config
+*.prof
+*.aux
+*.hp
+*.eventlog
+.stack-work/
+cabal.project.local
+cabal.project.local~
+.HTF/
+.ghc.environment.*
+stack.yaml.lock
+
+# End of https://www.gitignore.io/api/haskell
+
+.bash_history
+.cabal/
+.cache/
+.daten
+.forward
+.ghc/
+.newsrc
+.profile
+.ssh/
+.vscode-server/
+.wget-hsts
+.xsession
+.ysession
+stack.yaml

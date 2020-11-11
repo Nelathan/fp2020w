@@ -1,0 +1,79 @@
+Fakultät Tests
+Points per test case: 3; penalty per failed test case: 0; maximum: 10
+
+Test case: Fakultaet Test 0 ; test FAILED TO COMPILE
+Test case: Fakultaet Test 1 ; test FAILED TO COMPILE
+Test case: Fakultaet Test 10 ; test FAILED TO COMPILE
+Test case: Fakultaet Test 30 ; test FAILED TO COMPILE
+
+OK tests: 0; FAILED tests: 4
+Score: 0
+
+Fibonacci Tests
+Points per test case: 3; penalty per failed test case: 0; maximum: 10
+
+Test case: Fibonacci Test 0 ; test FAILED TO COMPILE
+Test case: Basic Fib Test 1 ; test FAILED TO COMPILE
+Test case: Basic Fib Test 10 ; test FAILED TO COMPILE
+Test case: Basic Fib Test 15 ; test FAILED TO COMPILE
+
+OK tests: 0; FAILED tests: 4
+Score: 0
+
+Binom Tests
+Points per test case: 3; penalty per failed test case: 0; maximum: 10
+
+Test case: Basic Binom Test 1 ; test FAILED TO COMPILE
+Test case: Basic Binom Test 2 ; test FAILED TO COMPILE
+Test case: Basic Binom Test 3 ; test FAILED TO COMPILE
+Test case: Big Binom Test 1 ; test FAILED TO COMPILE
+
+OK tests: 0; FAILED tests: 4
+Score: 0
+
+Fakultät_Fehlerhaft Tests
+Points per test case: 3; penalty per failed test case: 0; maximum: 10
+
+Test case: Fakultaet Test 0 ; test FAILED TO COMPILE
+Test case: Fakultaet Test 1 ; test FAILED TO COMPILE
+Test case: Fakultaet Test 10 ; test FAILED TO COMPILE
+Test case: Fakultaet Test 30 ; test FAILED TO COMPILE
+
+OK tests: 0; FAILED tests: 4
+Score: 0
+
+Fibonacci_Fehlerhaft tests
+Points per test case: 3; penalty per failed test case: 0; maximum: 10
+
+Test case: Fibonacci Test 0 ; test FAILED TO COMPILE
+Test case: Basic Fib Test 1 ; test FAILED TO COMPILE
+Test case: Basic Fib Test 10 ; test FAILED TO COMPILE
+Test case: Basic Fib Test 15 ; test FAILED TO COMPILE
+
+OK tests: 0; FAILED tests: 4
+Score: 0
+
+Binom_Fehlerhaft tests
+Points per test case: 3; penalty per failed test case: 0; maximum: 10
+
+Test case: Basic Binom Test 1 ; test FAILED TO COMPILE
+Test case: Basic Binom Test 2 ; test FAILED TO COMPILE
+Test case: Basic Binom Test 3 ; test FAILED TO COMPILE
+Test case: Big Binom Test 1 ; test FAILED TO COMPILE
+
+OK tests: 0; FAILED tests: 4
+Score: 0
+
+Binom_Langsam tests
+Points per test case: 3; penalty per failed test case: 0; maximum: 10
+
+Test case: Basic Binom Test 1 ; test FAILED TO COMPILE
+Test case: Basic Binom Test 2 ; test FAILED TO COMPILE
+Test case: Basic Binom Test 3 ; test FAILED TO COMPILE
+Test case: Big Binom Test 1 ; test FAILED TO COMPILE
+
+OK tests: 0; FAILED tests: 4
+Score: 0
+
+
+Total Score: 0

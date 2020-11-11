@@ -1,0 +1,48 @@
+Filtere Tests
+Points per test case: 3; penalty per failed test case: 0; maximum: 15
+
+Test case: Test 1 ; test OK
+Test case: Test 2 ; test OK
+Test case: Test 3 ; test OK
+Test case: Test 4 ; test OK
+Test case: Test 5 ; test OK
+
+OK tests: 5; FAILED tests: 0
+Score: 15
+
+KommtVor Tests
+Points per test case: 3; penalty per failed test case: 0; maximum: 15
+
+Test case: Test 1 ; test OK
+Test case: Test 2 ; test OK
+Test case: Test 3 ; test OK
+Test case: Test 4 ; test OK
+Test case: Test 5 ; test OK
+
+OK tests: 5; FAILED tests: 0
+Score: 15
+
+Aus Tests
+Points per test case: 3; penalty per failed test case: 0; maximum: 10
+
+Test case: Test 1 ; test OK
+Test case: Test 2 ; test OK
+Test case: Test 3 ; test OK
+Test case: Test 4 ; test OK
+
+OK tests: 4; FAILED tests: 0
+Score: 10
+
+H Tests
+Points per test case: 3; penalty per failed test case: 0; maximum: 10
+
+Test case: Test 1 ; test OK
+Test case: Test 2 ; test OK
+Test case: Test 3 ; test OK
+Test case: Test 4 ; test OK
+
+OK tests: 4; FAILED tests: 0
+Score: 10
+
+
+Total Score: 50

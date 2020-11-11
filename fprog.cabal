@@ -1,0 +1,44 @@
+cabal-version: 2.2
+name:          fprog
+version:       0.2.0.0
+build-type:    Simple
+
+library
+  exposed-modules:
+    Angabe1
+    Angabe2
+    Angabe3
+    Angabe4
+    Angabe5
+    Angabe6
+    Angabe7
+
+  build-depends:
+    , array       >=0.5.2.0
+    , base        >=4.10
+    , QuickCheck  ==2.13.2
+
+  hs-source-dirs:   ./
+  default-language: Haskell2010
+
+test-suite fprog-test
+  default-language: Haskell2010
+  type:             exitcode-stdio-1.0
+  hs-source-dirs:   test
+  main-is:          Main.hs
+  other-modules:
+    TestSuite1
+    TestSuite2
+    TestSuite3
+    TestSuite4
+    TestSuite5
+    TestSuite6
+    TestSuite7
+
+  build-depends:
+    , array
+    , base
+    , QuickCheck
+    , tasty           >=1.0
+    , tasty-hunit
+    , fprog

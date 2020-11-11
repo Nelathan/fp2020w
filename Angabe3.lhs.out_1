@@ -1,0 +1,132 @@
+Show Instance Tests
+Points per test case: 1; penalty per failed test case: 0; maximum: 4
+
+Test case: Test 1 ; test OK
+Test case: Test 2 ; test OK
+Test case: Test 3 ; test OK
+Test case: Test 4 ; test OK
+Test case: Test 5 ; test OK
+
+OK tests: 5; FAILED tests: 0
+Score: 4
+
+Eq Instance Tests
+Points per test case: 1; penalty per failed test case: 0; maximum: 4
+
+Test case: Test 1 ; test OK
+Test case: Test 2 ; test OK
+Test case: Test 3 ; test OK
+Test case: Test 4 ; test OK
+Test case: Test 5 ; test OK
+Test case: Test 6 ; test OK
+
+OK tests: 6; FAILED tests: 0
+Score: 4
+
+Ord Instance Tests
+Points per test case: 1; penalty per failed test case: 0; maximum: 4
+
+Test case: Test 1 ; test OK
+Test case: Test 2 ; test OK
+Test case: Test 3 ; test OK
+Test case: Test 4 ; test OK
+Test case: Test 5 ; test OK
+Test case: Test 6 ; test OK
+Test case: Test 7 ; test OK
+
+OK tests: 7; FAILED tests: 0
+Score: 4
+
+Num Instance Tests
+Points per test case: 1; penalty per failed test case: 0; maximum: 10
+
+Test case: Test 1 ; test OK
+Test case: Test 2 ; test OK
+Test case: Test 3 ; test OK
+Test case: Test 4 ; test OK
+Test case: Test 5 ; test OK
+Test case: Test 6 ; test OK
+Test case: Test 7 ; test OK
+Test case: Test 8 ; test OK
+Test case: Test 9 ; test OK
+Test case: Test 10 ; test OK
+Test case: Test 11 ; test OK
+Test case: Test 12 ; test OK
+Test case: Test 13 ; test OK
+Test case: Test 14 ; test OK
+
+OK tests: 14; FAILED tests: 0
+Score: 10
+
+Enum Instance Tests
+Points per test case: 1; penalty per failed test case: 0; maximum: 5
+
+Test case: Test 1 ; test OK
+Test case: Test 2 ; test OK
+Test case: Test 3 ; test OK
+Test case: Test 4 ; test OK
+Test case: Test 5 ; test OK
+
+OK tests: 5; FAILED tests: 0
+Score: 5
+
+Kanonisch Tests
+Points per test case: 1; penalty per failed test case: 0; maximum: 4
+
+Test case: Test 1 ; test OK
+Test case: Test 2 ; test OK
+Test case: Test 3 ; test OK
+Test case: Test 4 ; test OK
+
+OK tests: 4; FAILED tests: 0
+Score: 4
+
+Element Tests
+Points per test case: 1; penalty per failed test case: 0; maximum: 4
+
+Test case: Test 1 ; test OK
+Test case: Test 2 ; test OK
+Test case: Test 3 ; test OK
+Test case: Test 4 ; test OK
+
+OK tests: 4; FAILED tests: 0
+Score: 4
+
+Code Tests
+Points per test case: 1; penalty per failed test case: 0; maximum: 5
+
+Test case: Test 1 ; test OK
+Test case: Test 2 ; test OK
+Test case: Test 3 ; test OK
+Test case: Test 4 ; test OK
+Test case: Test 5 ; test OK
+Test case: Test 6 ; test OK
+Test case: Test 7 ; test OK
+Test case: Test 8 ; test OK
+Test case: Test 9 ; test OK
+
+OK tests: 9; FAILED tests: 0
+Score: 5
+
+ExTest Tests
+Points per test case: 1; penalty per failed test case: 0; maximum: 10
+
+Test case: Test 1 ; test OK
+Test case: Test 2 ; test OK
+Test case: Test 3 ; test OK
+Test case: Test 4 ; test OK
+Test case: Test 5 ; test OK
+Test case: Test 6 ; test OK
+Test case: Test 7 ; test OK
+Test case: Test 8 ; test OK
+Test case: Test 9 ; test OK
+Test case: Test 7 ; test OK
+Test case: Test 8 ; test OK
+Test case: Test 9 ; test OK
+Test case: Test 10 ; test OK
+
+OK tests: 13; FAILED tests: 0
+Score: 10
+
+
+Total Score: 50
