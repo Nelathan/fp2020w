@@ -68,7 +68,11 @@ Aufgabe A.3
 >                 | TK' Weg TBaum' TBaum' TBaum' deriving (Eq,Show)
 
 > awi :: TBaum -> TBaum'
-> awi = undefined
+> awi = treeAnnotation []
+
+> treeAnnotation :: [Richtung] -> TBaum -> TBaum'
+> treeAnnotation path TB = TB' path
+> treeAnnotation path (TK l m r) = TK' path (treeAnnotation (path++[L]) l) (treeAnnotation (path++[M]) m) (treeAnnotation (path++[R]) r)
 
 awi geht folgendermassen vor: ...
 
@@ -80,10 +84,46 @@ Aufgabe A.4
 >               | K (Baum a) (Info a) (Baum a)
 
 > instance Show a => Show (Baum a) where
+>   show (B a) = "<"++show a++">"
+>   show (K l a r) = "<Wurzel "++show a++" "++show l++" "++show r++">"
 
 > instance Eq a => Eq (Baum a) where
+>   (B a) == (B b) = a == b
+>   (K la ia ra) == (K lb ib rb) = ia == ib && la == lb && ra == rb
+>   _ == _ = False
+
+> eab :: Baum a -> Baum a -> Ordering
+> eab (B _) (B _) = EQ
+> eab K{} (B _) = GT
+> eab (B _) K{} = LT
+> eab (K la _ ra) (K lb _ rb)
+>   | cl == EQ && cr == EQ = EQ
+>   | (cl == GT || cr == GT) && not (cl == LT || cr == LT) = GT
+>   | otherwise = LT
+>   where
+>     cl = eab la lb
+>     cr = eab ra rb
+
+echte Anfangsliste
+
+> eal :: (Ord a) => [a] -> [a] -> Bool
+> eal (_:_) [] = True
+> eal (a:as) (b:bs) = a == b && eal as bs
+> eal _ _ = False
+
+Anfangsbaum hat Anfangslisten
+
+> ealt :: (Ord a) => Baum a -> Baum a -> Bool
+> ealt (B a) (B b) = eal a b
+> ealt (K _ a _) (B b) = eal a b
+> ealt (K la ia ra) (K lb ib rb) = eal ia ib && ealt la lb && ealt ra rb
+> ealt _ _ = False
 
 > instance Ord a => Ord (Baum a) where
+>   a > b = eab a b == GT && ealt a b
+>   a < b = b > a
+>   a >= b = a == b || a > b
+>   a <= b = a == b || a < b
 
 Die Instanzdeklarationen gehen folgendermassen vor: ...
 
