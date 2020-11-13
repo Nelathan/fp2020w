@@ -130,10 +130,28 @@ Die Instanzdeklarationen gehen folgendermassen vor: ...
 
 Aufgabe A.5
 
+
+
 > type UntereSchranke = Int
 > type ObereSchranke  = Int
 > data Intervall      = IV (UntereSchranke,ObereSchranke)
 >                       | Leer
 >                       | Ungueltig
 
+> isEmpty :: Intervall -> Bool
+> isEmpty Leer = True
+> isEmpty i
+>   | lBnd i > uBnd i = True
+>   | otherwise = False
+
+> lBnd :: Intervall -> UntereSchranke
+> lBnd (IV (u, _)) = u
+>
+> uBnd :: Intervall -> ObereSchranke
+> uBnd (IV (_, o)) = o
+
 > instance Show Intervall where
+>   show Ungueltig = "Kein Intervall"
+>   show i
+>     | isEmpty i = "<>"
+>     | otherwise = "<" ++ show (lBnd i) ++ "," ++ show (uBnd i) ++ ">"
