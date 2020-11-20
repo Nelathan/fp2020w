@@ -37,19 +37,6 @@ type Ungueltig = [Stimmzettel]
 
 type Platz_1_Stimmen = Nat0
 
-data Wahlausgang
-  = Ungueltiger_Wahlvorschlag
-  | Keine_gueltigen_Stimmen
-  | Gewaehlt_ist Wahlwerber
-  | Kein_Wahlsieger_Wahlwiederholung
-  deriving (Eq, Show)
-
-data Groesste_Wahlverlierer
-  = GWV [Partei]
-  | Keine
-  | Analyse_nicht_moeglich
-  deriving (Eq, Show)
-
 
 -- Aufgabe A.1
 
@@ -112,17 +99,15 @@ ausscheiden w no1
 
 -- Aufgabe A.7
 
+data Wahlausgang
+  = Ungueltiger_Wahlvorschlag
+  | Keine_gueltigen_Stimmen
+  | Gewaehlt_ist Wahlwerber
+  | Kein_Wahlsieger_Wahlwiederholung
+  deriving (Eq, Show)
+
 test :: Show a => a -> a
 test a = trace (show a) a
-
-stichwahl :: Wahlvorschlag -> Wahl -> Wahlausgang
-stichwahl _ [] = Kein_Wahlsieger_Wahlwiederholung
-stichwahl wv w = maybe alternative (Gewaehlt_ist . fst) winner
-  where
-    ausz = auszaehlen wv w
-    winner = wahlsieger wv ausz
-    alternative = maybe Kein_Wahlsieger_Wahlwiederholung subwahl ausz
-    subwahl no1 = stichwahl wv $ filter (not.null) $ ausscheiden w no1
 
 wahlausgang :: Wahlvorschlag -> Wahl -> Wahlausgang
 wahlausgang wv w
@@ -132,10 +117,58 @@ wahlausgang wv w
   where
     gueltig = fst $ trenne_Stimmzettel wv w
 
+stichwahl :: Wahlvorschlag -> Wahl -> Wahlausgang
+stichwahl _ [] = Kein_Wahlsieger_Wahlwiederholung
+stichwahl wv w = maybe alternative (Gewaehlt_ist . fst) winner
+  where
+    ausz = auszaehlen wv w
+    winner = wahlsieger wv ausz
+    alternative = maybe Kein_Wahlsieger_Wahlwiederholung subwahl ausz
+    subwahl no1 = stichwahl wv $ filter (not . null) $ ausscheiden w no1
+
+
 -- Aufgabe A.8
+data Groesste_Wahlverlierer
+  = GWV [Partei]
+  | Keine
+  | Analyse_nicht_moeglich
+  deriving (Eq, Show)
 
 wahlanalyse :: Wahlvorschlag -> Wahl -> Groesste_Wahlverlierer
+wahlanalyse wv w
+  | not (ist_gueltiger_Wahlvorschlag wv) = Analyse_nicht_moeglich
+  | null gueltig = Analyse_nicht_moeglich
+  | otherwise = knockout wv Nothing gueltig
+  where
+    gueltig = fst $ trenne_Stimmzettel wv w
 
-{- wahlanalyse geht folgendermassen vor: ...
--}
-wahlanalyse = undefined
+knockout :: Wahlvorschlag -> Maybe [Partei] -> Wahl -> Groesste_Wahlverlierer
+knockout wv p w
+  | (not.null) w && isNothing winner = knockout wv loser restVotes
+  | otherwise = declareLoser loser
+  where
+    ausz = auszaehlen wv w
+    loser = if isNothing p then lostParties wv w else p
+    winner = wahlsieger wv ausz
+    restVotes = filter (not.null) $ ausscheiden w (fromMaybe [] ausz)
+
+lostParties :: Wahlvorschlag -> Wahl -> Maybe [Partei]
+lostParties _ [] = Nothing
+lostParties wv w
+  | null lost2 = Nothing
+  | otherwise = Just lost2
+  where
+    p = (\ps -> trace ("left "++show ps) ps ) $ wahlToParties wv $ test w
+    pall = nub $ map partyOfWW wv
+    lost2 = pall \\ p
+    --lost = nub $ map (partyOfWW.(wv!!).fst) $ filter ((0==).snd) $ zip [0..] ausz
+
+wahlToParties :: Wahlvorschlag -> Wahl -> [Partei]
+wahlToParties wv w = nub $ map (partyOfWW.(wv !!).(-1+)) $ foldl union [] w
+
+declareLoser :: Maybe [Partei] -> Groesste_Wahlverlierer
+declareLoser Nothing = Keine
+declareLoser (Just ps) = GWV ps
+
+partyOfWW :: Wahlwerber -> Partei
+partyOfWW (WW _ _ p) = p
