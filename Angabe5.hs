@@ -1,6 +1,8 @@
 module Angabe5 where
 
 import Data.List
+import Data.Maybe
+import Debug.Trace
 
 {- 1. Vervollstaendigen Sie gemaess Angabentext!
    2. Löschen Sie keine Deklarationen aus diesem Rahmenprogramm, auch nicht die Modulanweisug!
@@ -100,16 +102,36 @@ reduceStimmzettel [] sz = sz
 reduceStimmzettel cs sz = [s | s <- sz, s `notElem` cs]
 
 ausscheiden :: Wahl -> [Platz_1_Stimmen] -> Wahl
-ausscheiden w no1 = map (reduceStimmzettel toRemove) w
+ausscheiden w no1
+  | null votes = w
+  | otherwise = map (reduceStimmzettel toRemove) w
   where
-    toRemove = map fst $ filter ((==) (minimum no1) . snd) $ zip [1 ..] no1
+    votes = filter (0 /=) no1
+    lowest = (>=) $ minimum votes
+    toRemove = map fst $ filter (lowest . snd) $ zip [1 ..] no1
 
 -- Aufgabe A.7
 
+test :: Show a => a -> a
+test a = trace (show a) a
+
+stichwahl :: Wahlvorschlag -> Wahl -> Wahlausgang
+stichwahl _ [] = Kein_Wahlsieger_Wahlwiederholung
+stichwahl wv w = maybe alternative (Gewaehlt_ist . fst) winner
+  where
+    ausz = auszaehlen wv w
+    winner = wahlsieger wv ausz
+    alternative = maybe Kein_Wahlsieger_Wahlwiederholung subwahl ausz
+    subwahl no1 = stichwahl wv $ filter (not.null) $ ausscheiden w no1
+
 wahlausgang :: Wahlvorschlag -> Wahl -> Wahlausgang
-{- wahlausgang eht folgendermassen vor: ...
--}
-wahlausgang = undefined
+wahlausgang wv w
+  | not (ist_gueltiger_Wahlvorschlag wv) = Ungueltiger_Wahlvorschlag
+  | null gueltig = Keine_gueltigen_Stimmen
+  | otherwise = stichwahl wv gueltig
+  where
+    gueltig = fst $ trenne_Stimmzettel wv w
+
 -- Aufgabe A.8
 
 wahlanalyse :: Wahlvorschlag -> Wahl -> Groesste_Wahlverlierer
