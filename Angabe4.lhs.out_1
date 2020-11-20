@@ -1,0 +1,56 @@
+Tests `breitest`
+Points per test case: 4; penalty per failed test case: 0; maximum: 12
+
+Test case: Test 1 ; test OK
+Test case: Test 2 ; test OK
+Test case: Test 3 ; test OK
+
+OK tests: 3; FAILED tests: 0
+Score: 12
+
+Tests `tae`
+Points per test case: 2; penalty per failed test case: 0; maximum: 10
+
+Test case: Test 1 ; test OK
+Test case: Test 2 ; test OK
+Test case: Test 3 ; test OK
+Test case: Test 4 ; test OK
+Test case: Test 5 ; test OK
+
+OK tests: 5; FAILED tests: 0
+Score: 10
+
+Tests `awi`
+Points per test case: 3; penalty per failed test case: 0; maximum: 12
+
+Test case: Test 1 ; test OK
+Test case: Test 2 ; test OK
+Test case: Test 3 ; test OK
+Test case: Test 4 ; test OK
+
+OK tests: 4; FAILED tests: 0
+Score: 12
+
+Show Instance Tests
+Points per test case: 2; penalty per failed test case: 0; maximum: 8
+
+Test case: Test 1 ; test OK
+Test case: Test 2 ; test OK
+Test case: Test 3 ; test OK
+Test case: Test 4 ; test OK
+
+OK tests: 4; FAILED tests: 0
+Score: 8
+
+Ord Instance Tests
+Points per test case: 3; penalty per failed test case: 0; maximum: 8
+
+Test case: Test 1 ; test OK
+Test case: Test 2 ; test OK
+Test case: Test 3 ; test OK
+
+OK tests: 3; FAILED tests: 0
+Score: 8
+
+
+Total Score: 50
