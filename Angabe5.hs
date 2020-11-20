@@ -84,7 +84,15 @@ auszaehlen wv w
 wahlsieger :: Wahlvorschlag -> Maybe [Platz_1_Stimmen] -> Maybe Wahlsieger
 {- wahlsieger geht folgendermassen vor: ...
 -}
-wahlsieger = undefined
+wahlsieger _ Nothing = Nothing
+wahlsieger wv (Just no1)
+  | not $ ist_gueltiger_Wahlvorschlag wv = Nothing
+  | length no1 /= length wv = Nothing
+  | otherwise = winner >>= (\winner -> Just (wv!!winner, winner + 1))
+  where
+    winner = findIndex (minVotes <) no1
+    minVotes = div (sum no1) 2
+
 
 -- Aufgabe A.6
 
