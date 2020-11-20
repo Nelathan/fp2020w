@@ -95,12 +95,14 @@ wahlsieger wv (Just no1)
 
 
 -- Aufgabe A.6
+reduceStimmzettel :: [Nat0] -> Stimmzettel -> Stimmzettel
+reduceStimmzettel [] sz = sz
+reduceStimmzettel cs sz = [s | s <- sz, s `notElem` cs]
 
 ausscheiden :: Wahl -> [Platz_1_Stimmen] -> Wahl
-{- ausscheiden geht folgendermassen vor: ...
--}
-
-ausscheiden = undefined
+ausscheiden w no1 = map (reduceStimmzettel toRemove) w
+  where
+    toRemove = map fst $ filter ((==) (minimum no1) . snd) $ zip [1 ..] no1
 
 -- Aufgabe A.7
 
