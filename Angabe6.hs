@@ -248,7 +248,7 @@ sozialforschungssicht = gen_sort cmp
   where
     cmp a b
       | getPhone a /= getPhone b = cmpPhone (getPhone a) (getPhone b)
-      | otherwise = getGehalt a <= getGehalt b
+      | otherwise = getGehalt a > getGehalt b
     cmpPhone Nothing _ = False
     cmpPhone _ Nothing = True
     cmpPhone a b = a < b
