@@ -1,6 +1,6 @@
 module Angabe7 where
-import Data.List
-import Data.Maybe
+
+import Data.Maybe (catMaybes, fromJust, isJust, isNothing)
 
 type Nat0 = Integer
 
@@ -95,36 +95,18 @@ type Turingtafel = [Zeile]
 -- Globale Turingmaschinenzustaende
 data GZustand = GZ Turingtafel Rechenband IZ LSK_Position
 
--- Turingmaschinensimulatoreingabe
-type Initiales_Rechenband = Rechenband
-
-data Sim_Eingabe = SE Turingtafel Initiales_Rechenband
-
--- Turingmaschinensimulatorausgabe
-type Finaler_interner_Zustand = Zustand
-
-type Finale_LSK_Position = LSK_Position
-
-type Finales_Rechenband = Rechenband
-
--- Abkuerzungen
-type FIZ = Finaler_interner_Zustand
-
-type FLSKP = Finale_LSK_Position
-
-type FRB = Finales_Rechenband
-
--- Simulatorausgabe
-data Sim_Ausgabe = SA FIZ FLSKP FRB
-
-
 -- Komfortfunktion zur Vereinfachung der Turingmaschineneingabe
 wandle_in_rb :: [Zeichenvorrat] -> Rechenband
 wandle_in_rb = write leer_rb 0
   where
     write :: Rechenband -> Bandfeld -> [Zeichenvorrat] -> Rechenband
     write rb _ [] = rb
-    write rb m (c:cs) = write (akt_rechenband rb m (Z c)) (m+1) cs
+    write rb m (c : cs) = write (akt_rechenband rb m (Z c)) (m + 1) cs
+
+wandel :: [Zeichenvorrat] -> Rechenband
+wandel cs
+  | null cs = RB U leer_band
+  | otherwise = RB (B 0 (fromIntegral $ length cs)) leer_band
 
 getIZ :: Zeile -> Interner_Zustand
 getIZ (iz, _, _, _) = iz
@@ -155,22 +137,22 @@ ist_zulaessige_Turingtafel (l : ls)
 transition :: GZustand -> GZustand
 transition (GZ tafel rb iz pos)
   | isNothing next = GZ tafel rb iz pos
-  | isMove befehl = GZ tafel rb ifz (readRB rb pos)
-  | otherwise = GZ tafel (akt_rechenband rb iz druckz) ifz druckz
+  | isMove befehl = GZ tafel rb ifz new_pos
+  | otherwise = GZ tafel (akt_rechenband rb iz druckz) ifz pos
   where
-    next = matchZeile tafel iz lskz
+    next = matchZeile tafel iz (readRB rb pos)
     befehl = getBefehl $ fromJust next
     ifz = getIFZ $ fromJust next
     druckz = (\(Drucke z) -> z) befehl
-
+    new_pos = moveLSK befehl pos
 
 matchZeile :: Turingtafel -> Interner_Zustand -> LSKZ -> Maybe Zeile
 matchZeile [] _ _ = Nothing
-matchZeile (t:ts) iz lskz
+matchZeile (t : ts) iz lskz
   | eqZeile t (iz, lskz, undefined, undefined) = Just t
   | otherwise = matchZeile ts iz lskz
 
-moveLSK :: Befehl -> IZ -> IZ
+moveLSK :: Befehl -> LSK_Position -> LSK_Position
 moveLSK (Drucke _) = id
 moveLSK (Bewege_LSK_nach Rechts) = (+) 1
 moveLSK (Bewege_LSK_nach Links) = (-) 1
@@ -179,18 +161,82 @@ moveLSK (Bewege_LSK_nach Links) = (-) 1
 type Spur = [GZustand]
 
 spur :: GZustand -> Spur
-spur = undefined
+spur = catMaybes . iterate spurStep . Just
+
+spurStep :: Maybe GZustand -> Maybe GZustand
+spurStep Nothing = Nothing
+spurStep (Just (GZ tafel rb iz pos))
+  | isJust $ matchZeile tafel iz (readRB rb pos) = Just $ transition (GZ tafel rb iz pos)
+  | otherwise = Nothing
 
 zeige_zustand :: GZustand -> String
-zeige_zustand = undefined
+zeige_zustand (GZ _ rb iz pos) =
+  "(IZ:"
+    ++ show iz
+    ++ ",LSK:"
+    ++ show pos
+    ++ ",B:"
+    ++ showRB rb
+    ++ ",Min:"
+    ++ show lo
+    ++ ",Max:"
+    ++ show hi
+    ++ ")"
+  where
+    (RB (B lo hi) _) = rb
+
+isRBEmpty :: Rechenband -> Bool
+isRBEmpty (RB U _) = True
+isRBEmpty (RB _ _) = False
+
+showRB :: Rechenband -> String
+showRB (RB U _) = "unbeschrieben"
+showRB (RB (B lo hi) band) = concatMap (showBZ . band) [lo .. hi]
+
+showBZ :: Bandalphabet -> String
+showBZ Blank = []
+showBZ (Z z) = [z]
 
 zeige_spur :: Spur -> String
-zeige_spur = undefined
+zeige_spur [] = ""
+zeige_spur (sz : spur) =
+  zeige_zustand sz
+    ++ concatMap ((" ->> " ++) . zeige_zustand) spur
+
+-- Turingmaschinensimulatoreingabe
+type Initiales_Rechenband = Rechenband
+
+data Sim_Eingabe = SE Turingtafel Initiales_Rechenband
+
+-- Turingmaschinensimulatorausgabe
+type Finaler_interner_Zustand = Zustand
+
+type Finale_LSK_Position = LSK_Position
+
+type Finales_Rechenband = Rechenband
+
+-- Abkuerzungen
+type FIZ = Finaler_interner_Zustand
+
+type FLSKP = Finale_LSK_Position
+
+type FRB = Finales_Rechenband
+
+-- Simulatorausgabe
+data Sim_Ausgabe = SA FIZ FLSKP FRB
 
 -- Turingmaschinensimulator, kurz Simulator
 sim :: Sim_Eingabe -> Sim_Ausgabe
-sim = undefined
+sim (SE tafel rb) = SA end_iz end_pos end_rb
+  where
+    gzs = spur (GZ tafel rb 0 0)
+    (GZ _ end_rb end_iz end_pos) = last gzs
 
 -- Ausgabe
 instance Show Sim_Ausgabe where
-  show = undefined
+  show (SA iz pos rb) =
+    "IZ: " ++ show iz ++ " // LSKP: " ++ show pos ++ " // BI: " ++ bi rb
+    where
+      bi :: Rechenband -> String
+      bi (RB U _) = "Leer"
+      bi (RB (B lo hi) band) = show lo ++ ">" ++ showRB (RB (B lo hi) band) ++ "<" ++ show hi
