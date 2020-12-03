@@ -1,6 +1,7 @@
 module Angabe7 where
 
 import Data.Maybe (catMaybes, fromJust, isJust, isNothing)
+import Debug.Trace (trace)
 
 type Nat0 = Integer
 
@@ -28,6 +29,9 @@ data MinMax
 
 data Rechenband = RB MinMax Band
 
+test :: Show a => a -> a
+test a = trace ('>':show a) a
+
 -- Aufgabe A.1
 leer_band :: p -> Bandalphabet
 leer_band _ = Blank
@@ -45,9 +49,10 @@ akt_rechenband (RB range band) feld zeichen = RB new_range (akt_band band feld z
   where
     (B lo hi) = range
     new_range
-      | zeichen == Blank && (range == U || lo == hi) = U
-      | zeichen == Blank && feld == lo = B (scan [lo + 1 .. hi]) hi
-      | zeichen == Blank && feld == hi = B lo (scan [hi -1 .. lo])
+      | zeichen == Blank && range == U = U
+      | zeichen == Blank && feld == lo && feld == hi = U
+      | zeichen == Blank && feld == lo = B (scan [(lo + 1) .. hi]) hi
+      | zeichen == Blank && feld == hi = B lo (scan $ reverse [lo .. (hi - 1)])
       | zeichen /= Blank && range == U = B feld feld
       | zeichen /= Blank && (feld < lo || feld > hi) = B (min lo feld) (max hi feld)
       | otherwise = range
@@ -97,16 +102,15 @@ data GZustand = GZ Turingtafel Rechenband IZ LSK_Position
 
 -- Komfortfunktion zur Vereinfachung der Turingmaschineneingabe
 wandle_in_rb :: [Zeichenvorrat] -> Rechenband
-wandle_in_rb = write leer_rb 0
-  where
-    write :: Rechenband -> Bandfeld -> [Zeichenvorrat] -> Rechenband
-    write rb _ [] = rb
-    write rb m (c : cs) = write (akt_rechenband rb m (Z c)) (m + 1) cs
-
-wandel :: [Zeichenvorrat] -> Rechenband
-wandel cs
+wandle_in_rb cs
   | null cs = RB U leer_band
-  | otherwise = RB (B 0 (fromIntegral $ length cs)) leer_band
+  | otherwise = RB (B 1 csl) retC
+  where
+    csl = fromIntegral $ length cs
+    retC :: Band
+    retC x
+      | x > 0 && x <= csl = Z $ cs !! fromIntegral (x - 1)
+      | otherwise = Blank
 
 getIZ :: Zeile -> Interner_Zustand
 getIZ (iz, _, _, _) = iz
@@ -121,10 +125,14 @@ getIFZ :: Zeile -> Interner_Folgezustand
 getIFZ (_, _, _, ifz) = ifz
 
 eqZeile :: Zeile -> Zeile -> Bool
-eqZeile (iz, lskz, _, _) (iz2, lskz2, _, _) = iz == iz2 && lskz == lskz2
+eqZeile (iz, c, _, _) (iz2, c2, _, _) = iz == iz2 && c == c2
+
+testZeile :: Interner_Zustand -> LSKZ -> Zeile -> Bool
+testZeile iz c (iz2, c2, _, _) = iz == iz2 && c == c2
 
 isMove :: Befehl -> Bool
 isMove (Bewege_LSK_nach _) = True
+isMove _ = False
 
 -- Zulaessige Turingtafeln
 ist_zulaessige_Turingtafel :: Turingtafel -> Bool
@@ -138,7 +146,7 @@ transition :: GZustand -> GZustand
 transition (GZ tafel rb iz pos)
   | isNothing next = GZ tafel rb iz pos
   | isMove befehl = GZ tafel rb ifz new_pos
-  | otherwise = GZ tafel (akt_rechenband rb iz druckz) ifz pos
+  | otherwise = GZ tafel (akt_rechenband rb pos druckz) ifz pos
   where
     next = matchZeile tafel iz (readRB rb pos)
     befehl = getBefehl $ fromJust next
@@ -148,40 +156,42 @@ transition (GZ tafel rb iz pos)
 
 matchZeile :: Turingtafel -> Interner_Zustand -> LSKZ -> Maybe Zeile
 matchZeile [] _ _ = Nothing
-matchZeile (t : ts) iz lskz
-  | eqZeile t (iz, lskz, undefined, undefined) = Just t
-  | otherwise = matchZeile ts iz lskz
+matchZeile (t : ts) iz c
+  | ok t = Just t
+  | otherwise = matchZeile ts iz c
+  where
+    ok = testZeile iz c
 
 moveLSK :: Befehl -> LSK_Position -> LSK_Position
 moveLSK (Drucke _) = id
 moveLSK (Bewege_LSK_nach Rechts) = (+) 1
-moveLSK (Bewege_LSK_nach Links) = (-) 1
+moveLSK (Bewege_LSK_nach Links) = \x -> x - 1
 
 -- Spurfunktionen
 type Spur = [GZustand]
 
 spur :: GZustand -> Spur
-spur = catMaybes . iterate spurStep . Just
-
-spurStep :: Maybe GZustand -> Maybe GZustand
-spurStep Nothing = Nothing
-spurStep (Just (GZ tafel rb iz pos))
-  | isJust $ matchZeile tafel iz (readRB rb pos) = Just $ transition (GZ tafel rb iz pos)
-  | otherwise = Nothing
+spur gz
+  | isJust $ matchZeile tafel iz (readRB rb pos) = gz : spur (transition gz)
+  | otherwise = [gz]
+  where
+    (GZ tafel rb iz pos) = gz
 
 zeige_zustand :: GZustand -> String
-zeige_zustand (GZ _ rb iz pos) =
-  "(IZ:"
-    ++ show iz
-    ++ ",LSK:"
-    ++ show pos
-    ++ ",B:"
-    ++ showRB rb
-    ++ ",Min:"
-    ++ show lo
-    ++ ",Max:"
-    ++ show hi
-    ++ ")"
+zeige_zustand (GZ _ rb iz pos)
+  | isRBEmpty rb = "(IZ:" ++ show iz ++ ",LSK:" ++ show pos ++ ",B:"++ showRB rb ++")"
+  | otherwise =
+    "(IZ:"
+      ++ show iz
+      ++ ",LSK:"
+      ++ show pos
+      ++ ",B:"
+      ++ showRB rb
+      ++ ",Min:"
+      ++ show lo
+      ++ ",Max:"
+      ++ show hi
+      ++ ")"
   where
     (RB (B lo hi) _) = rb
 
