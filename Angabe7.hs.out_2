@@ -1,0 +1,77 @@
+A.1 akt_rechenband
+Points per test case: 5; penalty per failed test case: 0; maximum: 20
+
+Test case: Test 1 ; test OK
+Test case: Test 2 ; test OK
+Test case: Test 3 ; test OK
+Test case: Test 4 ; test OK
+
+OK tests: 4; FAILED tests: 0
+Score: 20
+
+A.2 a) wandle_in_rb
+Points per test case: 5; penalty per failed test case: 0; maximum: 10
+
+Test case: Test 1 ; test OK
+Test case: Test 2 ; test OK
+
+OK tests: 2; FAILED tests: 0
+Score: 10
+
+A.2 b) ist_zulaessige_Turingtafel
+Points per test case: 5; penalty per failed test case: 0; maximum: 10
+
+Test case: Test 1 ; test OK
+Test case: Test 2 ; test OK
+
+OK tests: 2; FAILED tests: 0
+Score: 10
+
+A.2 c) transition
+Points per test case: 5; penalty per failed test case: 0; maximum: 15
+
+Test case: Test 1 ; test OK
+Test case: Test 2 ; test OK
+Test case: Test 3 ; test OK
+
+OK tests: 3; FAILED tests: 0
+Score: 15
+
+A.2 d) spur
+Points per test case: 8; penalty per failed test case: 0; maximum: 15
+
+Test case: Test 1 ; test OK
+Test case: Test 2 ; test OK
+
+OK tests: 2; FAILED tests: 0
+Score: 15
+
+A.2 e) zeige_zustand
+Points per test case: 5; penalty per failed test case: 0; maximum: 10
+
+Test case: Test 1 ; test OK
+Test case: Test 2 ; test OK
+
+OK tests: 2; FAILED tests: 0
+Score: 10
+
+A.2 g) sim
+Points per test case: 5; penalty per failed test case: 0; maximum: 10
+
+Test case: Test 1 ; test OK
+Test case: Test 2 ; test OK
+
+OK tests: 2; FAILED tests: 0
+Score: 10
+
+A.2 h) instance Show Sim_Ausgabe
+Points per test case: 5; penalty per failed test case: 0; maximum: 10
+
+Test case: Test 1 ; test OK
+Test case: Test 2 ; test OK
+
+OK tests: 2; FAILED tests: 0
+Score: 10
+
+
+Total Score: 100
